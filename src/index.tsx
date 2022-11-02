@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-type SetSortKey<T> = (sortBy: keyof T) => void;
-type SetSortOrder = (sortOrder: "asc" | "desc") => void;
-type Sorted<T> = T[];
+export type SetSortKey<T> = (sortBy: keyof T) => void;
+export type SetSortOrder = (sortOrder: "asc" | "desc") => void;
+export type Sorted<T> = T[];
 
-type SortableReturn<T = Record<string, string>> = {
+export type SortableReturn<T = Record<string, string>> = {
   setSortKey: SetSortKey<T>;
   setSortOrder: SetSortOrder;
   readonly sorted: Sorted<T>;
@@ -12,7 +12,7 @@ type SortableReturn<T = Record<string, string>> = {
   readonly sortOrder: "asc" | "desc";
 };
 
-type DefaultOptions<T> = {
+export type DefaultOptions<T> = {
   defaultSortKey: keyof T;
   defaultSortOrder?: "asc" | "desc";
 };
