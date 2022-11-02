@@ -33,18 +33,18 @@ const sampleData = [
 
 const ExampleA = () => {
   // sort the data by name in ascending order
-  const { sortedData, setSortKey } = useSortable(sampleData, {
+  const { sorted, setSortKey } = useSortable(sampleData, {
     defaultSortKey: "name",
-    defaultOrder: "asc",
+    defaultSortOrder: "asc",
   });
   return <div>{example}</div>;
 };
 
 const ExampleB = () => {
   // sort the data by name in descending order
-  const { sortedData, setSortKey } = useSortable(sampleData, "name", {
+  const { sorted, setSortKey } = useSortable(sampleData, "name", {
     defaultSortKey: "name",
-    defaultOrder: "desc",
+    defaultSortOrder: "desc",
   });
   return <div>{example}</div>;
 };
@@ -64,18 +64,22 @@ const sampleData = [
 ];
 
 const Example = () => {
-  const { sortedData, setSortKey } = useSortable(sampleData, {
+  const { sorted, setSortKey } = useSortable(sampleData, {
     defaultSortKey: "name",
-    defaultOrder: "asc",
+    defaultSortOrder: "asc",
   });
 
   const handleSort = (key: string) => {
     setSortKey(key);
   };
 
-  return <Table data={sortedData} onHeaderClicked={handleSort} />;
+  return <Table data={sorted} onHeaderClicked={handleSort} />;
 };
 ```
+
+### More
+
+Please check the [example](https://github.com/LUN7/use-sortable/example) and [docs] for more details.
 
 ## Q&A
 
