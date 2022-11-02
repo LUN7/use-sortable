@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "use-sortable documentation",
+  "readme": "./README.md",
+  "entryPoints": ["./src"],
+  "sort": ["source-order"],
+  "media": "media",
+  "categorizeByGroup": false,
+  "navigationLinks": {
+    "Docs": "https://github.com/LUN7/use-sortable/docs",
+    "GitHub": "https://github.com/LUN7/use-sortable/"
+  }
+}
