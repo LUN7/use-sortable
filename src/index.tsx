@@ -1,5 +1,3 @@
-import { isValidDateString } from "./helpers";
-
 import { useState } from "react";
 
 type SetSortKey<T> = (sortBy: keyof T) => void;
@@ -8,7 +6,7 @@ type Sorted<T> = T[];
 
 type SortableReturn<T = Record<string, string>> = {
   setSortKey: SetSortKey<T>;
-  setSortDir: SetSortOrder;
+  setSortOrder: SetSortOrder;
   readonly sorted: Sorted<T>;
   readonly sortKey: keyof T;
   readonly sortOrder: "asc" | "desc";
@@ -16,7 +14,7 @@ type SortableReturn<T = Record<string, string>> = {
 
 type DefaultOptions<T> = {
   defaultSortKey: keyof T;
-  defaultOrder?: "asc" | "desc";
+  defaultSortOrder?: "asc" | "desc";
 };
 
 /**
@@ -26,7 +24,7 @@ type DefaultOptions<T> = {
  * @param option.defaultDir - The default sort direction;
  * @returns A tuple containing the sorted data and a function to set the sort key
  */
-export function useSortable<T extends Record<string, string>>(
+export function useSortable<T extends Record<string, string | number | Date>>(
   data: T[],
   options?: DefaultOptions<T>
 ): SortableReturn<T> {
@@ -34,29 +32,33 @@ export function useSortable<T extends Record<string, string>>(
     options?.defaultSortKey ?? ""
   );
   const [ascending, setAscending] = useState<boolean>(
-    options?.defaultOrder === "asc" ?? true
+    options?.defaultSortOrder === "asc" ?? true
   );
 
   const sorted = data?.sort((a, b) => {
+    const candidateA = a[sortKey];
+    const candidateB = b[sortKey];
     if (ascending) {
-      if (isValidDateString(a[sortKey])) {
-        return new Date(a[sortKey]).getTime() - new Date(b[sortKey]).getTime();
+      if (candidateA instanceof Date) {
+        return candidateA.getTime() - (candidateB as Date).getTime();
       }
-      if (typeof Number(a[sortKey]) === "number") {
-        return Number(a[sortKey]) - Number(b[sortKey]);
+      if (typeof Number(candidateA) === "number") {
+        return Number(candidateA) - Number(candidateB);
       }
-      return a[sortKey].charCodeAt(0) - b[sortKey].charCodeAt(0);
+      return (
+        String(candidateA).charCodeAt(0) - String(candidateB).charCodeAt(0)
+      );
     }
-    if (isValidDateString(a[sortKey])) {
-      return new Date(b[sortKey]).getTime() - new Date(a[sortKey]).getTime();
+    if (candidateA instanceof Date) {
+      return (candidateB as Date).getTime() - candidateA.getTime();
     }
-    if (typeof Number(a[sortKey]) === "number") {
-      return Number(b[sortKey]) - Number(a[sortKey]);
+    if (typeof Number(candidateA) === "number") {
+      return Number(candidateB) - Number(candidateA);
     }
-    return b[sortKey].charCodeAt(0) - a[sortKey].charCodeAt(0);
+    return String(candidateB).charCodeAt(0) - String(candidateA).charCodeAt(0);
   });
 
-  const setSortDir = (sortOrder: "asc" | "desc") => {
+  const setSortOrder = (sortOrder: "asc" | "desc") => {
     setAscending(sortOrder === "asc");
   };
 
@@ -71,7 +73,7 @@ export function useSortable<T extends Record<string, string>>(
   return {
     sorted,
     setSortKey,
-    setSortDir,
+    setSortOrder,
     sortKey,
     sortOrder: ascending ? "asc" : "desc",
   };
