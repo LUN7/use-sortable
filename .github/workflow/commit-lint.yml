@@ -1,0 +1,13 @@
+name: commit-lint
+on:
+  workflow_call:
+jobs:
+  commit-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+      - run: yarn add @commitlint/cli
+      - run: yarn run commitlint --from HEAD~${{ github.event.pull_request.commits }} --to HEAD
