@@ -1,29 +1,106 @@
-import { useMyHook } from './'
-import { renderHook, act } from "@testing-library/react-hooks";
+import { useSortable } from "./";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 // mock timer using jest
 jest.useFakeTimers();
 
-describe('useMyHook', () => {
-  it('updates every second', () => {
-    const { result } = renderHook(() => useMyHook());
+describe("useMyHook", () => {
+  it("should be able to sort data by number in ascending order", () => {
+    const mockData = [
+      { id: 1, name: "John" },
+      { id: 3, name: "Jane" },
+      { id: 2, name: "Bob" },
+    ];
 
-    expect(result.current).toBe(0);
+    const { result } = renderHook(() =>
+      useSortable(mockData, {
+        defaultSortKey: "id",
+        defaultSortOrder: "asc",
+      })
+    );
 
-    // Fast-forward 1sec
+    expect(result.current.sorted.map((el) => el.id)).toEqual([1, 2, 3]);
+  });
+
+  it("should be able to sort data by number in descending order", () => {
+    const mockData = [
+      { id: 1, name: "John" },
+      { id: 3, name: "Jane" },
+      { id: 2, name: "Bob" },
+    ];
+
+    const { result } = renderHook(() =>
+      useSortable(mockData, {
+        defaultSortKey: "id",
+        defaultSortOrder: "desc",
+      })
+    );
+
+    expect(result.current.sorted.map((el) => el.id)).toEqual([3, 2, 1]);
+  });
+
+  it("should be able to sort data by Date in descending order", () => {
+    const mockData = [
+      { id: 1, name: "John", createdAt: new Date("2020-01-01") },
+      { id: 3, name: "Jane", createdAt: new Date("2020-01-03") },
+      { id: 2, name: "Bob", createdAt: new Date("2020-01-02") },
+    ];
+
+    const { result } = renderHook(() =>
+      useSortable(mockData, {
+        defaultSortKey: "createdAt",
+        defaultSortOrder: "desc",
+      })
+    );
+
+    expect(result.current.sorted.map((el) => el.id)).toEqual([3, 2, 1]);
+  });
+
+  it("should be able to change sort order by setSortOrder", () => {
+    const mockData = [
+      { id: 1, name: "John", createdAt: new Date("2020-01-01") },
+      { id: 3, name: "Jane", createdAt: new Date("2020-01-03") },
+      { id: 2, name: "Bob", createdAt: new Date("2020-01-02") },
+    ];
+
+    const { result } = renderHook(() =>
+      useSortable(mockData, {
+        defaultSortKey: "createdAt",
+        defaultSortOrder: "desc",
+      })
+    );
+
+    expect(result.current.sorted.map((el) => el.id)).toEqual([3, 2, 1]);
+
     act(() => {
-      jest.advanceTimersByTime(1000);
+      result.current.setSortOrder("asc");
+      jest.advanceTimersByTime(100);
     });
 
-    // Check after total 1 sec
-    expect(result.current).toBe(1);
+    expect(result.current.sorted.map((el) => el.id)).toEqual([1, 2, 3]);
+  });
 
-    // Fast-forward 1 more sec
+  it("should be able to change sort order by setSortKey with the same key", () => {
+    const mockData = [
+      { id: 1, name: "John", createdAt: new Date("2020-01-01") },
+      { id: 3, name: "Jane", createdAt: new Date("2020-01-03") },
+      { id: 2, name: "Bob", createdAt: new Date("2020-01-02") },
+    ];
+
+    const { result } = renderHook(() =>
+      useSortable(mockData, {
+        defaultSortKey: "createdAt",
+        defaultSortOrder: "desc",
+      })
+    );
+
+    expect(result.current.sorted.map((el) => el.id)).toEqual([3, 2, 1]);
+
     act(() => {
-      jest.advanceTimersByTime(1000);
+      result.current.setSortKey("createdAt");
+      jest.advanceTimersByTime(100);
     });
 
-    // Check after total 2 sec
-    expect(result.current).toBe(2);
-  })
-})
+    expect(result.current.sorted.map((el) => el.id)).toEqual([1, 2, 3]);
+  });
+});
