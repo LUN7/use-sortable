@@ -17,11 +17,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
-      - name: Build the package
-        run: yarn && yarn build
       - name: Install dependencies
         run: yarn
+      - name: Build the package
+        run: yarn build
       - name: Release
         env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
