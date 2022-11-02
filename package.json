@@ -1,10 +1,14 @@
 {
-  "name": "use-sortable",
+  "name": "@lun7/use-sortable",
+  "title": "useSortable",
   "version": "0.0.0-development",
   "description": "A simple react hook to help you sort the data for table view and list view",
   "author": "LUN7",
   "license": "MIT",
-  "repository": "LUN7/use-sortable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LUN7/use-sortable"
+  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -13,7 +17,14 @@
     "node": ">=8",
     "npm": ">=5"
   },
+  "keywords": [
+    "react",
+    "hook",
+    "sort",
+    "sortable"
+  ],
   "scripts": {
+    "doc-gen": "typedoc --entryPointStrategy packages .",
     "test": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "build": "rollup -c && tsc -d --emitDeclarationOnly --noEmit false --declarationDir dist",
