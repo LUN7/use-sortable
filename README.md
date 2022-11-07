@@ -2,7 +2,7 @@
 
 > A simple react hook to help you sort the data for table view and list view
 
-[![NPM](https://img.shields.io/npm/v/use-sortable.svg)](https://www.npmjs.com/package/@lun7/use-sortable) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@lun7/use-sortable.svg)](https://www.npmjs.com/package/@lun7/use-sortable) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
